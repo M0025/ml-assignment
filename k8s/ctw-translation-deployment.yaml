@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ctw-translation
+  namespace: misko-ctw-14
+  labels:
+    app: ctw-translation-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ctw-translation-app
+  template:
+    metadata:
+      labels:
+        app: ctw-translation-app
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
+      containers:
+      - name: translator
+        image: 048035602494.dkr.ecr.ap-northeast-1.amazonaws.com/translator:latest
+        ports:
+        - name: http
+          containerPort: 9527
+        imagePullPolicy: IfNotPresent
+      nodeSelector:
+        kubernetes.io/os: linux

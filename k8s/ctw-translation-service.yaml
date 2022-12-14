@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ctw-translation-service
+  namespace: misko-ctw-14
+  labels:
+    app: ctw-translation-app
+spec:
+  selector:
+    app: ctw-translation-app
+  ports:
+    - protocol: TCP
+      port: 9527
+      targetPort: 9527
